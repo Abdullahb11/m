@@ -1,0 +1,1 @@
+web: cd app && gunicorn mood_detector.wsgi --log-file - 

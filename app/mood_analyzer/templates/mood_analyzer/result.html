@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Analysis Result</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+        .result-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .image-container {
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+        .image-container img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .mood-result {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            width: 100%;
+            max-width: 400px;
+        }
+        .mood-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .confidence {
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .emotion-bars {
+            width: 100%;
+            max-width: 400px;
+        }
+        .emotion-bar {
+            margin-bottom: 10px;
+        }
+        .emotion-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .emotion-name {
+            font-weight: bold;
+            color: #34495e;
+        }
+        .emotion-value {
+            color: #7f8c8d;
+        }
+        .bar-container {
+            height: 20px;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .bar {
+            height: 100%;
+            border-radius: 10px;
+        }
+        .happy-bar { background-color: #f1c40f; }
+        .sad-bar { background-color: #3498db; }
+        .angry-bar { background-color: #e74c3c; }
+        .fearful-bar { background-color: #9b59b6; }
+        .disgust-bar { background-color: #2ecc71; }
+        .surprise-bar { background-color: #e67e22; }
+        .neutral-bar { background-color: #95a5a6; }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .back-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mood Analysis Result</h1>
+        
+        <div class="result-section">
+            <div class="image-container">
+                <img src="{{ analysis.image.url }}" alt="Analyzed image">
+            </div>
+            
+            <div class="mood-result">
+                <div class="mood-title">{{ analysis.get_mood_display }}</div>
+                <div class="confidence">Confidence: {{ analysis.confidence|floatformat:2 }}%</div>
+            </div>
+            
+            <div class="emotion-bars">
+                {% for emotion, value in emotions.items %}
+                <div class="emotion-bar">
+                    <div class="emotion-label">
+                        <span class="emotion-name">{{ emotion|title }}</span>
+                        <span class="emotion-value">{{ value|floatformat:2 }}%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar {{ emotion }}-bar" style="width: {{ value|floatformat:2 }}%;"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <a href="{% url 'home' %}" class="back-btn">Analyze Another Image</a>
+    </div>
+</body>
+</html> 
