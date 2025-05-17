@@ -1,1 +1,1 @@
-web: cd app && gunicorn mood_detector.wsgi --log-file - 
+web: cd app && gunicorn mood_detector.wsgi:application --log-file - 
